@@ -25,12 +25,14 @@ def main():
         raise SystemExit("entry must be a single line")
     if not line.strip():
         raise SystemExit("entry must not be only whitespace")
+    if any(ord(ch) < 0x20 for ch in line):
+        raise SystemExit("entry must not contain control characters")
     if not 1 <= len(line) <= 120:
         raise SystemExit(f"line is {len(line)} chars, must be 1..120")
     os.makedirs(os.path.dirname(OUTPUT_PATH) or ".", exist_ok=True)
     with open(OUTPUT_PATH, "w", encoding="utf-8", newline="\n") as f:
         f.write(line)
-    print(f"wrote {len(line)} chars to {OUTPUT_PATH}")
+    print(f"wrote {len(line)} chars to {OUTPUT_PATH}: {line}")
 
 
 if __name__ == "__main__":
